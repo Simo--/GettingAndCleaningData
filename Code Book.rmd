@@ -1,0 +1,73 @@
+---
+title: "Codebook"
+author: "Mohamed Maftah"
+date: "11-03-2016"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+---
+## Project Description
+The purpose of this project is to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis.
+
+##Study design and data processing
+
+###Collection of the raw data
+The data was collected using the embedded accelerometer and gyroscope of the Samsung Galaxy S II from 30 individuals each wearing one on their waist while performing different activities.
+
+###Notes on the original (raw) data 
+A full description is available at the site where the data was obtained: http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones 
+
+##Creating the tidy datafile
+
+###Guide to create the tidy data file
+1) Download the data from : https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip.
+2) Unzip the file.
+3) Set your working directory to : UCI HAR Dataset.
+4) Run run_analysis.R.
+
+###Cleaning of the data
+The cleaning script does the following :
+
+1. Merges the training and the test sets to create one data set by row binding them.
+2. Extracts only the measurements on the mean and standard deviation for each measurement using the 'features.txt' file and regular expressions.
+3. Gives descriptive activity names to the activities in the data set by row binding the 'Y_test.txt' and 'Y_train'.txt files and subseting them to the 'activity_lable.txt' file.
+4. Labels the data set with descriptive variable names by taking the names of the extracted columns from the 'features.txt' file in step 2 and editing them.
+5. Creates a tidy data set with the average of each variable for each activity and each subject by aggregating on the activity and the subject_id using the 'mean' function.
+[link to the readme document that describes the code in greater detail](https://github.com/Simo--/GettingAndCleaningData/blob/master/README.md)
+
+##Description of the variables in the tiny_data.txt file
+ - Dimensions of the dataset
+ 180 observations and 80 variables
+ - Summary of the data
+```{r echo = F}
+tidy_data <- read.table("./tidy_data.txt", header = TRUE)
+summary(tidy_data)
+```
+ - Variables present in the dataset
+```{r echo = F}
+names(tidy_data)
+```
+###Variables
+The features selected for this dataset come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
+
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
+
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
+
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
+
+The set of variables that were estimated from these signals are the ones on the mean ans standard deviation.
+
+Features are normalized and bounded within [-1,1].
+
+Name and class of the variables :
+```{r echo = F}
+for(i in 1:80)
+{
+        print("=====================", quote = F)
+        print(names(tidy_data[i]), quote = F)
+        print(class(tidy_data[, i]), quote = F)
+}
+```
